@@ -1,4 +1,4 @@
-module github.com/fpwiwowarczyk/proglog
+module github.com/fpwiwowarczyk/Distributed_GO/proglog
 
 go 1.14
 
