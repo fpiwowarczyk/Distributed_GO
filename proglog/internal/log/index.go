@@ -1,6 +1,7 @@
 package log
 
 import (
+	"fmt"
 	"io"
 	"os"
 
@@ -60,11 +61,14 @@ func (i *index) Read(in int64) (out uint32, pos uint64, err error) {
 	}
 	if in == -1 {
 		out = uint32((i.size / entWidth))
+		fmt.Printf("Out: %d\n", out)
+		fmt.Printf("entWidth: %d\n", entWidth)
 	} else {
 		out = uint32(in)
 	}
 	pos = uint64(out) * entWidth
 	if i.size < pos+entWidth {
+		fmt.Printf("I size: %d\n", i.size)
 		return 0, 0, io.EOF
 	}
 	out = enc.Uint32(i.mmap[pos : pos+offWidth])
