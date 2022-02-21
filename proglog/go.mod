@@ -3,6 +3,7 @@ module github.com/fpiwowarczyk/Distributed_GO/proglog
 go 1.17
 
 require (
+	github.com/casbin/casbin v1.9.1
 	github.com/cloudflare/cfssl v1.6.1 // indirect
 	github.com/cloudflare/go-metrics v0.0.0-20151117154305-6a9aea36fb41 // indirect
 	github.com/gorilla/mux v1.8.0
