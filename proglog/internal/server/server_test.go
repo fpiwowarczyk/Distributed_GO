@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	api "github.com/fpiwowarczyk/Distributed_GO/proglog/api/v1"
+	"github.com/fpiwowarczyk/Distributed_GO/proglog/internal/auth"
 	"github.com/fpiwowarczyk/Distributed_GO/proglog/internal/config"
 	"github.com/fpiwowarczyk/Distributed_GO/proglog/internal/log"
 	"github.com/stretchr/testify/require"
@@ -82,8 +83,10 @@ func setupTest(t *testing.T, fn func(*Config)) (rootClient, nobodyClient api.Log
 	clog, err := log.NewLog(dir, log.Config{})
 	require.NoError(t, err)
 
+	authorizer := auth.New(config.ACLModelFile, config.ACLPolicyFile)
 	cfg = &Config{
-		CommitLog: clog,
+		CommitLog:  clog,
+		Authorizer: authorizer,
 	}
 
 	if fn != nil {
