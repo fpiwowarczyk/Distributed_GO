@@ -4,6 +4,7 @@ import (
 	"context"
 	"io/ioutil"
 	"net"
+	"os"
 	"testing"
 
 	api "github.com/fpiwowarczyk/Distributed_GO/proglog/api/v1"
@@ -79,11 +80,13 @@ func setupTest(t *testing.T, fn func(*Config)) (rootClient, nobodyClient api.Log
 
 	dir, err := ioutil.TempDir("", "server-test")
 	require.NoError(t, err)
+	defer os.RemoveAll(dir)
 
 	clog, err := log.NewLog(dir, log.Config{})
 	require.NoError(t, err)
 
 	authorizer := auth.New(config.ACLModelFile, config.ACLPolicyFile)
+
 	cfg = &Config{
 		CommitLog:  clog,
 		Authorizer: authorizer,
@@ -92,7 +95,6 @@ func setupTest(t *testing.T, fn func(*Config)) (rootClient, nobodyClient api.Log
 	if fn != nil {
 		fn(cfg)
 	}
-
 	server, err := NewGRPCServer(cfg, grpc.Creds(serverCreds))
 	require.NoError(t, err)
 

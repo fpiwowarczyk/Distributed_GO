@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 
 	api "github.com/fpiwowarczyk/Distributed_GO/proglog/api/v1"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
@@ -40,6 +41,7 @@ func newgrpcServer(config *Config) (srv *grpcServer, err error) {
 }
 
 func (s *grpcServer) Produce(ctx context.Context, req *api.ProduceRequest) (*api.ProduceResponse, error) {
+	fmt.Println("Produce:", subject(ctx), objectWildcard, produceAction)
 	if err := s.Authorizer.Authorize(subject(ctx), objectWildcard, produceAction); err != nil {
 		return nil, err
 	}
@@ -51,6 +53,7 @@ func (s *grpcServer) Produce(ctx context.Context, req *api.ProduceRequest) (*api
 }
 
 func (s *grpcServer) Consume(ctx context.Context, req *api.ConsumeRequest) (*api.ConsumeResponse, error) {
+	fmt.Println("Consume:", subject(ctx), objectWildcard, produceAction)
 	if err := s.Authorizer.Authorize(
 		subject(ctx),
 		objectWildcard,
